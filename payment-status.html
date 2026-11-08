@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment status – HopeCongo Foundation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#060b14;--deep:#0a1628;--accent:#22d3ee;--bg:#060b14;--surface:#0f2137;
+  --text:#e8f1f8;--muted:#7a93a8;--border:rgba(34,211,238,.12);--err:#f87171;
+  --cyan:#22d3ee;--mint:#34d399;--panel:#0d1b2a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--text);line-height:1.65;font-size:16px;min-height:100vh}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:720px;margin:0 auto;padding:0 24px}
+header{background:rgba(6,11,20,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.header-row{display:flex;justify-content:space-between;align-items:center;padding:16px 0}
+.brand{font-size:1.35rem;font-weight:800;letter-spacing:-.03em;color:#fff}
+.brand span{color:var(--accent)}
+.hdr-link{color:var(--muted);font-size:.9rem;font-weight:500;padding:8px 14px;border-radius:10px;transition:all .2s}
+.hdr-link:hover{color:var(--cyan);background:rgba(34,211,238,.08)}
+
+.stage{padding:48px 0 72px}
+.panel{
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;
+  box-shadow:0 0 40px rgba(34,211,238,.06);overflow:hidden;
+}
+.panel-top{
+  padding:28px 28px 22px;border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(34,211,238,.06) 0%, transparent 100%);
+}
+.badge-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.status-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 14px;border-radius:999px;font-size:.78rem;font-weight:700;
+  letter-spacing:.02em;text-transform:uppercase;
+  background:rgba(248,113,113,.12);color:#fca5a5;border:1px solid rgba(248,113,113,.35);
+}
+.status-badge .dot{width:7px;height:7px;border-radius:50%;background:#f87171;box-shadow:0 0 8px rgba(248,113,113,.7)}
+.ref-chip{
+  font-family:'JetBrains Mono',monospace;font-size:.8rem;color:#a8c0d4;
+  background:rgba(6,11,20,.55);border:1px solid rgba(34,211,238,.12);
+  padding:6px 12px;border-radius:8px;
+}
+.panel-top h1{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;margin-bottom:8px;color:#e8f1f8}
+.panel-top .lead{color:#8aa0b4;font-size:.95rem;line-height:1.6;max-width:540px}
+
+.panel-body{padding:26px 28px 8px}
+.detail-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;
+}
+@media(max-width:560px){.detail-grid{grid-template-columns:1fr}}
+.detail{
+  background:rgba(6,11,20,.45);border:1px solid rgba(34,211,238,.1);
+  border-radius:14px;padding:14px 16px;
+}
+.detail .lbl{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.detail .val{font-size:.98rem;font-weight:600;color:#e8f1f8;word-break:break-all}
+.detail .val.mono{font-family:'JetBrains Mono',monospace;font-size:.88rem;color:#b8d0e4}
+
+.why{
+  background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.18);
+  border-radius:14px;padding:16px 18px;margin-bottom:22px;
+}
+.why h3{font-size:.82rem;font-weight:700;color:#fca5a5;margin-bottom:6px;letter-spacing:.02em}
+.why p{font-size:.9rem;color:#9ab0c4;line-height:1.6}
+
+.steps{margin-bottom:8px}
+.steps h3{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.step{
+  display:flex;gap:14px;padding:12px 0;border-bottom:1px solid rgba(34,211,238,.08);
+}
+.step:last-child{border-bottom:none}
+.step-num{
+  flex-shrink:0;width:28px;height:28px;border-radius:50%;
+  background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:700;color:var(--cyan);
+}
+.step-body{flex:1}
+.step-body strong{display:block;font-size:.9rem;color:#e8f1f8;margin-bottom:2px}
+.step-body span{font-size:.84rem;color:#7a93a8;line-height:1.5}
+
+.panel-foot{
+  padding:20px 28px 28px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+  border-top:1px solid var(--border);margin-top:8px;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 22px;border-radius:12px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--cyan),#06b6d4);color:#061018;
+  font-weight:700;font-size:.95rem;font-family:inherit;
+  box-shadow:0 6px 20px rgba(34,211,238,.3);transition:transform .15s,box-shadow .15s;
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(34,211,238,.4)}
+.btn-ghost{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:13px 20px;border-radius:12px;cursor:pointer;font-family:inherit;font-size:.92rem;font-weight:600;
+  background:transparent;border:1.5px solid rgba(34,211,238,.3);color:var(--cyan);
+  transition:background .15s;
+}
+.btn-ghost:hover{background:rgba(34,211,238,.08)}
+.foot-note{width:100%;font-size:.78rem;color:#5a7388;margin-top:6px;line-height:1.5}
+
+.support-strip{
+  margin-top:28px;padding:18px 22px;border-radius:16px;
+  background:rgba(15,33,55,.7);border:1px solid var(--border);
+  display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+}
+.support-strip p{font-size:.88rem;color:#8aa0b4;max-width:420px;line-height:1.55}
+.support-strip a{color:var(--cyan);font-weight:600;font-size:.9rem}
+
+footer{padding:28px 0 40px;border-top:1px solid var(--border);margin-top:20px}
+.foot-bottom{font-size:.82rem;color:#5a7388;text-align:center}
+.foot-bottom a{color:#7a93a8;margin:0 6px}
+.foot-bottom a:hover{color:var(--cyan)}
+
+.icon-x{
+  width:56px;height:56px;border-radius:50%;margin-bottom:16px;
+  background:rgba(248,113,113,.1);border:2px solid rgba(248,113,113,.35);
+  display:flex;align-items:center;justify-content:center;
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap header-row">
+    <a class="brand" href="index.html">Hope<span>Congo</span></a>
+    <a class="hdr-link" href="donate.html">← Back to donation</a>
+  </div>
+</header>
+
+<main class="stage">
+  <div class="wrap">
+    <div class="panel">
+      <div class="panel-top">
+        <div class="icon-x" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="badge-row">
+          <span class="status-badge"><span class="dot"></span> <span id="badgeText">Not completed</span></span>
+          <span class="ref-chip" id="refChip">—</span>
+        </div>
+        <h1 id="pageTitle">We couldn’t finish this payment</h1>
+        <p class="lead" id="pageLead">The processor returned a temporary error. No funds were taken from your account. You can try again or use a different method — your reference is kept for support.</p>
+      </div>
+
+      <div class="panel-body">
+        <div class="detail-grid">
+          <div class="detail">
+            <div class="lbl">Amount</div>
+            <div class="val" id="dAmount">—</div>
+          </div>
+          <div class="detail">
+            <div class="lbl">Method</div>
+            <div class="val" id="dMethod">—</div>
+          </div>
+          <div class="detail">
+            <div class="lbl">Email on file</div>
+            <div class="val mono" id="dEmail">—</div>
+          </div>
+          <div class="detail">
+            <div class="lbl">Attempt time (UTC)</div>
+            <div class="val mono" id="dTime">—</div>
+          </div>
+        </div>
+
+        <div class="why">
+          <h3 id="whyTitle">Why this happens</h3>
+          <p id="whyBody">Card networks and banks occasionally decline or time out on the first try — especially on international nonprofits, new devices, or when online purchases are restricted. PayPal can also fail briefly during peak load. In every case recorded here, the charge did not settle.</p>
+        </div>
+
+        <div class="steps">
+          <h3>What you can do</h3>
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Try again with the same details</strong>
+              <span>Many declines clear on a second attempt a few minutes later.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Switch method</strong>
+              <span>Use another card, or switch between Card and PayPal on the donation page.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Contact support with your reference</strong>
+              <span>Email <strong style="color:#c5d8e8">support@hopecongo.org</strong> and include the reference above. We reply within one business day.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-foot">
+        <a class="btn-primary" href="donate.html" id="retryBtn">Return to donation form</a>
+        <a class="btn-ghost" href="index.html">Go to homepage</a>
+        <p class="foot-note">Error code: <span id="errCode">—</span> · This page does not store full card numbers. Only a reference is retained for support.</p>
+      </div>
+    </div>
+
+    <div class="support-strip">
+      <p>HopeCongo Foundation processes voluntary contributions for water, education, and field programs in eastern Congo. Questions about this attempt are answered at finance@hopecongo.org.</p>
+      <a href="mailto:support@hopecongo.org">support@hopecongo.org →</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-bottom">© 2026 HopeCongo Foundation · <a href="transparency.html">Transparency</a> · <a href="mailto:support@hopecongo.org">Contact</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  function q(k){
+    try{
+      var p = new URLSearchParams(location.search);
+      return p.get(k) || "";
+    }catch(e){ return ""; }
+  }
+  function safe(s, max){
+    s = String(s || "").replace(/[<>&]/g, "");
+    return s.length > (max||120) ? s.slice(0, max) + "…" : s;
+  }
+  var method = (q("m") || "card").toLowerCase();
+  var amount = safe(q("a") || "—", 40);
+  var ref = safe(q("r") || "—", 40);
+  var email = safe(q("e") || "—", 80);
+  var time = safe(q("t") || new Date().toISOString(), 40);
+  var code = method === "paypal" ? "PP-CONN-408" : "CARD-DECLINE-51";
+
+  document.getElementById("refChip").textContent = ref;
+  document.getElementById("dAmount").textContent = amount;
+  document.getElementById("dMethod").textContent = method === "paypal" ? "PayPal" : "Card";
+  document.getElementById("dEmail").textContent = email || "—";
+  document.getElementById("dTime").textContent = time;
+  document.getElementById("errCode").textContent = code;
+
+  if(method === "paypal"){
+    document.getElementById("badgeText").textContent = "PayPal unavailable";
+    document.getElementById("pageTitle").textContent = "PayPal couldn’t complete this donation";
+    document.getElementById("pageLead").textContent = "PayPal returned a temporary connection error while talking to their payment network. Nothing was charged. You can try PayPal again shortly or finish with a card.";
+    document.getElementById("whyTitle").textContent = "About PayPal interruptions";
+    document.getElementById("whyBody").textContent = "PayPal’s checkout can fail briefly during maintenance windows, regional routing issues, or when the account session expires mid-flow. HopeCongo does not hold your PayPal password; the attempt simply never settled on their side.";
+  } else {
+    document.getElementById("badgeText").textContent = "Card not charged";
+    document.getElementById("pageTitle").textContent = "Your card payment didn’t go through";
+    document.getElementById("pageLead").textContent = "The bank or card network did not approve this charge. It may be a temporary decline, an online-purchase block, or a short glitch between processors. No amount left your card.";
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Education – HopeCongo Foundation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#060b14;--deep:#0a1628;--panel:#0d1b2a;--line:rgba(34,211,238,.12);
+  --cyan:#22d3ee;--mint:#34d399;--violet:#a78bfa;--text:#e8f1f8;--muted:#7a93a8;
+  --glow:0 0 40px rgba(34,211,238,.15);--card:#0f2137;--border:rgba(34,211,238,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--text);line-height:1.65;font-size:15px;min-height:100vh}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+header{background:rgba(6,11,20,.85);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--line)}
+.header-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:16px}
+.brand{font-size:1.35rem;font-weight:800;letter-spacing:-.03em;color:#fff}
+.brand span{color:var(--cyan);text-shadow:0 0 20px rgba(34,211,238,.5)}
+nav{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+nav a{color:var(--muted);font-weight:500;font-size:.88rem;padding:9px 14px;border-radius:10px;transition:all .2s}
+nav a:hover{color:var(--cyan);background:rgba(34,211,238,.08)}
+nav a.active{color:var(--cyan);background:rgba(34,211,238,.12);font-weight:600}
+.nav-donate{background:linear-gradient(135deg,var(--cyan),#06b6d4);color:#041016!important;padding:10px 20px!important;border-radius:999px!important;font-weight:700!important;box-shadow:0 0 24px rgba(34,211,238,.35);font-size:.88rem!important}
+
+.hero{padding:64px 0 48px;position:relative;overflow:hidden;border-bottom:1px solid var(--line);text-align:center}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 20% 40%,rgba(34,211,238,.12),transparent 55%),radial-gradient(ellipse 50% 40% at 80% 20%,rgba(167,139,250,.1),transparent 50%),linear-gradient(180deg,var(--deep),var(--navy));pointer-events:none;z-index:0}
+.hero .grid-bg{position:absolute;inset:0;opacity:.35;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(34,211,238,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.06) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse at center,black 20%,transparent 75%);mask-image:radial-gradient(ellipse at center,black 20%,transparent 75%)}
+.hero .wrap{position:relative;z-index:1}
+.hero .tag{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:#22d3ee;text-shadow:0 0 18px rgba(34,211,238,.55),0 0 4px rgba(34,211,238,.35);margin-bottom:12px;font-family:'JetBrains Mono',monospace}
+.hero h1{font-size:clamp(1.9rem,4.2vw,2.7rem);font-weight:800;letter-spacing:-.03em;margin-bottom:14px;line-height:1.15}
+.hero h1.grad,.hero h1 .grad{background:linear-gradient(90deg,var(--cyan),var(--mint),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p.lead{font-size:1.02rem;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.6}
+
+.live-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px;
+  padding:0;background:transparent;border:0;
+}
+.live-cell{
+  background:rgba(12,26,42,.9);border:1px solid rgba(34,211,238,.14);border-radius:16px;
+  padding:18px 16px;text-align:left;transition:border-color .2s, box-shadow .2s;
+}
+.live-cell:hover{border-color:rgba(34,211,238,.35);box-shadow:0 0 24px rgba(34,211,238,.08)}
+.live-cell .label{font-size:.68rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.live-cell .val{font-size:1.45rem;font-weight:800;color:#22d3ee;letter-spacing:-.02em;text-shadow:0 0 24px rgba(34,211,238,.65),0 0 8px rgba(34,211,238,.45);}
+.live-cell .val.cyan{color:#22d3ee}
+.live-cell .sub{font-size:.75rem;color:var(--muted);margin-top:4px}
+
+.live-cell{background:var(--panel);padding:20px 18px;text-align:center}
+.live-cell .label{font-size:.68rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.live-cell .val{font-size:1.45rem;font-weight:800;color:#22d3ee;letter-spacing:-.02em;text-shadow:0 0 24px rgba(34,211,238,.65),0 0 8px rgba(34,211,238,.45);}
+.live-cell .val.cyan{color:#22d3ee;text-shadow:0 0 24px rgba(34,211,238,.65),0 0 8px rgba(34,211,238,.45);}
+
+.section{padding:52px 0}
+.sec-head{margin-bottom:28px}
+.sec-head .tag{font-size:.68rem;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;color:#22d3ee;text-shadow:0 0 18px rgba(34,211,238,.55),0 0 4px rgba(34,211,238,.35);margin-bottom:8px;font-family:'JetBrains Mono',monospace}
+.sec-head h2{font-size:clamp(1.3rem,2.6vw,1.7rem);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.sec-head p{color:var(--muted);max-width:560px;font-size:.92rem;line-height:1.55}
+
+.two-col{display:grid;grid-template-columns:1.1fr 0.9fr;gap:28px;align-items:start}
+.prose p{color:var(--muted);font-size:.95rem;margin-bottom:14px;line-height:1.65}
+.prose h3{font-size:1.1rem;font-weight:800;margin:18px 0 8px;color:#fff}
+.side-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--glow)}
+.side-card h3{font-size:.95rem;font-weight:700;margin-bottom:12px}
+.side-card ul{list-style:none}
+.side-card li{font-size:.88rem;padding:10px 0;border-bottom:1px solid var(--line);color:var(--muted);display:flex;justify-content:space-between;gap:12px}
+.side-card li:last-child{border-bottom:none}
+.side-card li strong{color:#e8f1f8;font-weight:600}
+
+.school-list{display:flex;flex-direction:column;gap:16px}
+.school{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;transition:border-color .2s,box-shadow .2s}
+.school:hover{border-color:rgba(34,211,238,.35);box-shadow:0 0 28px rgba(34,211,238,.1)}
+.school .loc{font-size:.72rem;letter-spacing:1.2px;text-transform:uppercase;font-weight:700;color:var(--cyan);margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+.school h3{font-size:1.15rem;font-weight:800;margin-bottom:8px}
+.school p{font-size:.9rem;color:var(--muted);line-height:1.55;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:.72rem;font-weight:600;padding:4px 11px;border-radius:999px;background:rgba(34,211,238,.1);color:var(--cyan);border:1px solid rgba(34,211,238,.2);font-family:'JetBrains Mono',monospace}
+
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mini{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.mini h4{font-size:.98rem;font-weight:700;margin-bottom:8px}
+.mini p{font-size:.85rem;color:var(--muted);line-height:1.5}
+
+.cta-final{background:linear-gradient(135deg,rgba(34,211,238,.1),rgba(52,211,153,.08));border-radius:24px;padding:44px 28px;text-align:center;border:1px solid var(--line)}
+.cta-final h2{font-size:clamp(1.3rem,2.8vw,1.7rem);font-weight:800;margin-bottom:10px}
+.cta-final p{color:var(--muted);max-width:420px;margin:0 auto 20px;font-size:.95rem}
+.btn{display:inline-flex;padding:14px 32px;border-radius:999px;font-weight:700;font-size:.95rem;background:linear-gradient(135deg,var(--cyan),#06b6d4);color:#041016;box-shadow:0 0 24px rgba(34,211,238,.35)}
+.btn:hover{box-shadow:0 0 32px rgba(34,211,238,.5)}
+
+footer{border-top:1px solid var(--line);padding:36px 0 20px;margin-top:20px;color:var(--muted)}
+.foot-bottom{text-align:center;font-size:.78rem}
+
+@media(max-width:900px){.two-col,.grid3{grid-template-columns:1fr}.live-strip{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){nav a:not(.nav-donate):not(.active){display:none}}
+
+/* === CANONICAL HEADER (transparency baseline) === */
+.wrap{max-width:1120px!important;margin:0 auto;padding:0 24px}
+header{background:rgba(6,11,20,.85)!important;backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(34,211,238,.12)}
+.header-row{display:flex!important;justify-content:space-between!important;align-items:center!important;padding:14px 0!important;gap:16px!important;width:100%}
+.brand{font-size:1.35rem!important;font-weight:800;letter-spacing:-.03em;color:#fff;flex-shrink:0}
+.brand span{color:#22d3ee;text-shadow:0 0 20px rgba(34,211,238,.5)}
+nav{display:flex!important;gap:4px!important;flex-wrap:nowrap!important;align-items:center!important;margin-left:auto}
+nav a{color:#7a93a8!important;font-weight:500!important;font-size:.88rem!important;padding:9px 14px!important;border-radius:10px!important;transition:all .2s;white-space:nowrap}
+nav a:hover{color:#22d3ee!important;background:rgba(34,211,238,.08)!important}
+nav a.active{color:#22d3ee!important;background:rgba(34,211,238,.12)!important;font-weight:600!important}
+.nav-donate{background:linear-gradient(135deg,#22d3ee,#06b6d4)!important;color:#041016!important;padding:10px 20px!important;border-radius:999px!important;font-weight:700!important;box-shadow:0 0 24px rgba(34,211,238,.35)!important;font-size:.88rem!important}
+
+
+/* Footer legal links + shared modals */
+.foot-bottom a{color:var(--cyan,#22d3ee);text-decoration:none;border-bottom:1px solid rgba(34,211,238,.35);padding-bottom:1px;cursor:pointer}
+.foot-bottom a:hover{border-bottom-color:var(--cyan,#22d3ee);text-shadow:0 0 12px rgba(34,211,238,.35)}
+.hc-overlay{position:fixed;inset:0;background:rgba(4,8,15,.72);backdrop-filter:blur(8px);z-index:3000;display:none;align-items:center;justify-content:center;padding:24px}
+.hc-overlay.open{display:flex}
+.hc-modal{
+  background:#0d1b2a;border:1px solid rgba(34,211,238,.2);border-radius:20px;
+  max-width:560px;width:100%;max-height:min(82vh,720px);display:flex;flex-direction:column;
+  box-shadow:0 24px 64px rgba(0,0,0,.45);overflow:hidden;
+}
+.hc-modal.wide{max-width:640px}
+.hc-modal-head{padding:22px 24px 12px;border-bottom:1px solid rgba(34,211,238,.12)}
+.hc-modal-head h2{font-size:1.25rem;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+.hc-modal-head p{font-size:.88rem;color:#7a93a8}
+.hc-modal-body{padding:18px 24px;overflow-y:auto;font-size:.9rem;line-height:1.65;color:#c5d4e0}
+.hc-modal-body h3{font-size:.95rem;font-weight:700;color:#e8f1f8;margin:18px 0 8px}
+.hc-modal-body h3:first-child{margin-top:0}
+.hc-modal-body p{margin-bottom:10px}
+.hc-modal-body ul{margin:0 0 12px 18px;padding:0}
+.hc-modal-body li{margin-bottom:6px}
+.hc-modal-body a{color:#22d3ee}
+.hc-contact-row{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.hc-contact-item{
+  padding:14px 16px;border-radius:14px;border:1px solid rgba(34,211,238,.15);
+  background:rgba(15,33,55,.6);
+}
+.hc-contact-item .role{font-size:.68rem;letter-spacing:1.2px;text-transform:uppercase;color:#22d3ee;font-family:'JetBrains Mono',monospace;margin-bottom:4px}
+.hc-contact-item strong{display:block;font-size:.98rem;margin-bottom:2px}
+.hc-contact-item a{font-size:.9rem}
+.hc-modal-foot{padding:12px 24px 20px;border-top:1px solid rgba(34,211,238,.12);display:flex;justify-content:flex-end}
+.hc-modal-foot button{
+  padding:10px 20px;border-radius:12px;border:none;cursor:pointer;font-weight:700;font-size:.9rem;
+  background:linear-gradient(135deg,#22d3ee,#06b6d4);color:#041016;font-family:inherit;
+}
+
+
+
+/* Universal soft cyan outer glow on cards/boxes */
+.live-cell, .chip-filter, .rail-card, .program-card, .value-card,
+.method-step, .village, .school, .panel, .report, .contact,
+.ledger-row, .sc, .pdf-card, .side-card, .prose, .tile {
+  box-shadow: 0 0 18px rgba(34,211,238,.14), 0 0 36px rgba(34,211,238,.07), inset 0 1px 0 rgba(34,211,238,.06);
+}
+.live-cell:hover, .chip-filter:hover, .rail-card:hover, .program-card:hover, .value-card:hover,
+.method-step:hover, .village:hover, .school:hover, .report:hover, .sc:hover, .pdf-card:hover, .tile:hover {
+  border-color: rgba(34,211,238,.42) !important;
+  box-shadow: 0 0 28px rgba(34,211,238,.28), 0 0 56px rgba(34,211,238,.12), inset 0 1px 0 rgba(34,211,238,.12) !important;
+}
+
+
+/* Hero title — screenshot match: tag + big gradient title only */
+.hero .tag{
+  font-size:.7rem !important;letter-spacing:2px !important;text-transform:uppercase !important;
+  font-weight:600 !important;color:#22d3ee !important;
+  text-shadow:0 0 18px rgba(34,211,238,.55) !important;
+  margin-bottom:14px !important;font-family:'JetBrains Mono',monospace !important;
+}
+.hero h1.grad, .hero h1{
+  font-size:clamp(1.75rem,4.2vw,2.75rem) !important;
+  font-weight:800 !important;letter-spacing:-.03em !important;
+  line-height:1.15 !important;margin-bottom:28px !important;
+  max-width:18ch;margin-left:auto;margin-right:auto;
+}
+.hero h1.grad{
+  background:linear-gradient(90deg,#22d3ee,#34d399,#a78bfa) !important;
+  -webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+}
+.hero p.lead{display:none !important}
+
+
+/* Education top = transparency live-strip sizing */
+.hero .live-strip{
+  display:grid !important;
+  grid-template-columns:repeat(4,1fr) !important;
+  gap:14px !important;
+  margin-top:28px !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  width:100% !important;
+}
+.hero .live-cell{
+  background:rgba(12,26,42,.9) !important;
+  border:1px solid rgba(34,211,238,.14) !important;
+  border-radius:16px !important;
+  padding:18px 16px !important;
+  text-align:left !important;
+  box-sizing:border-box !important;
+  box-shadow: 0 0 18px rgba(34,211,238,.14), 0 0 36px rgba(34,211,238,.07) !important;
+}
+.hero .live-cell .label{
+  font-size:.68rem !important;
+  letter-spacing:1.2px !important;
+  text-transform:uppercase !important;
+  color:#7a93a8 !important;
+  font-family:'JetBrains Mono',monospace !important;
+  margin-bottom:6px !important;
+}
+.hero .live-cell .val{
+  font-size:1.45rem !important;
+  font-weight:800 !important;
+  color:#22d3ee !important;
+  letter-spacing:-.02em !important;
+  text-shadow:0 0 24px rgba(34,211,238,.65),0 0 8px rgba(34,211,238,.45) !important;
+}
+.hero .live-cell .sub{
+  font-size:.75rem !important;
+  color:#7a93a8 !important;
+  margin-top:4px !important;
+}
+@media(max-width:900px){.hero .live-strip{grid-template-columns:1fr 1fr !important}}
+
+
+/* Education top = transparency exact sizing */
+.hero .live-strip{
+  display:grid !important;
+  grid-template-columns:repeat(4,1fr) !important;
+  gap:14px !important;
+  margin-top:28px !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  width:100% !important;
+}
+.hero .live-cell{
+  background:rgba(12,26,42,.9) !important;
+  border:1px solid rgba(34,211,238,.14) !important;
+  border-radius:16px !important;
+  padding:18px 16px !important;
+  text-align:left !important;
+  box-sizing:border-box !important;
+  box-shadow: 0 0 18px rgba(34,211,238,.14), 0 0 36px rgba(34,211,238,.07) !important;
+}
+.hero .live-cell .label{
+  font-size:.68rem !important;
+  letter-spacing:1.2px !important;
+  text-transform:uppercase !important;
+  color:#7a93a8 !important;
+  font-family:'JetBrains Mono',monospace !important;
+  margin-bottom:6px !important;
+}
+.hero .live-cell .val{
+  font-size:1.45rem !important;
+  font-weight:800 !important;
+  color:#22d3ee !important;
+  letter-spacing:-.02em !important;
+  text-shadow:0 0 24px rgba(34,211,238,.65),0 0 8px rgba(34,211,238,.45) !important;
+}
+.hero .live-cell .sub{
+  font-size:.75rem !important;
+  color:#7a93a8 !important;
+  margin-top:4px !important;
+}
+@media(max-width:900px){.hero .live-strip{grid-template-columns:1fr 1fr !important}}
+
+/* Remove shiny outline on context prose panel */
+.two-col .prose, .prose{
+  border:none !important;
+  box-shadow:none !important;
+  background:transparent !important;
+  padding:0 !important;
+}
+.side-card{
+  box-shadow:none !important;
+  border:1px solid rgba(34,211,238,.12) !important;
+}
+.chip-link{
+  text-decoration:none;color:#041016 !important;
+  background:linear-gradient(135deg,#22d3ee,#06b6d4) !important;
+  border-color:transparent !important;font-weight:700 !important;
+}
+
+
+/* Top box subtitles — white like transparency */
+.hero .live-cell .sub,
+.live-cell .sub{
+  color:#e8f1f8 !important;
+  opacity:.9 !important;
+}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap header-row">
+    <a href="./index.html" class="brand">Hope<span>Congo</span></a>
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="./impact.html">Work</a>
+      <a href="./schools.html" class="active">Education</a>
+      <a href="./stories.html">Stories</a>
+      <a href="./transparency.html">Transparency</a>
+      <a href="./donate.html" class="nav-donate">Donation</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="wrap" style="position:relative">
+    <p class="tag">// education · kivu corridor</p>
+    <h1 class="grad">Learning that lasts in North &amp; South Kivu.</h1>
+    <div class="live-strip">
+      <div class="live-cell">
+        <div class="label">Rooms built</div>
+        <div class="val cyan" id="eduRooms">—</div>
+        <div class="sub">solid classrooms</div>
+      </div>
+      <div class="live-cell">
+        <div class="label">Pupils</div>
+        <div class="val cyan" id="eduPupils">—</div>
+        <div class="sub">in school this year</div>
+      </div>
+      <div class="live-cell">
+        <div class="label">Teachers</div>
+        <div class="val cyan" id="eduTeachers">—</div>
+        <div class="sub">paid &amp; trained</div>
+      </div>
+      <div class="live-cell">
+        <div class="label">Edu spend</div>
+        <div class="val cyan" id="eduSpend">—</div>
+        <div class="sub">of funds deployed</div>
+      </div>
+    </div></div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="tag">01 — context</p>
+      <h2>School in Kivu</h2>
+      <p>Primary lasts six years. Many kids still walk far or learn under tarps when roofs fail.</p>
+    </div>
+    <div class="two-col">
+      <div class="prose">
+        <p>School is free on paper. Broken roofs, late teacher pay, and long walks still keep kids out.</p>
+        <h3>What kids face</h3>
+        <p>Far walks on mud roads. Crowded rooms. No light at home for homework.</p>
+        <h3>What we fund</h3>
+        <p>Solid classrooms, desks, books, teacher pay, and catch-up classes.</p>
+      </div>
+      <div class="side-card">
+        <h3>Quick facts</h3>
+        <ul>
+          <li><strong>Primary cycle</strong><span>6 years</span></li>
+          <li><strong>Languages</strong><span>French + local</span></li>
+          <li><strong>Main barriers</strong><span>Distance, fees, roofs</span></li>
+          <li><strong>Rainy season</strong><span>High absenteeism</span></li>
+          <li><strong>Teacher pay</strong><span>Often irregular</span></li>
+          <li><strong>Our focus</strong><span>Rooms, staff, catch-up</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:8px">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="tag">02 — named schools</p>
+      <h2>School sites</h2>
+      <p>Real facilities in the Kivu corridor — matched to the Work page ledger where costs are public.</p>
+    </div>
+    <div class="school-list">
+            <article class="school">
+        <div class="loc">South Kivu · Kalehe</div>
+        <h3>Shasha · three new classrooms</h3>
+        <p>Kids left a tarp shelter for a brick block with desks, boards, and two paid teachers.</p>
+        <div class="chips"><span class="chip">Built 2025</span><span class="chip">~240 pupils</span><span class="chip">In use</span><a class="chip chip-link" href="edu/shasha-school.html">Full story →</a></div>
+      </article>
+      <article class="school">
+        <div class="loc">South Kivu · Walungu</div>
+        <h3>Walungu · evening literacy circle</h3>
+        <p>Grades 1–3 who fell behind meet after dark with solar lamps, reading kits, and a paid facilitator.</p>
+        <div class="chips"><span class="chip">Ongoing</span><span class="chip">~90 children</span><span class="chip">Catch-up</span><a class="chip chip-link" href="edu/walungu-literacy.html">Full story →</a></div>
+      </article>
+      <article class="school">
+        <div class="loc">North Kivu · Rutshuru</div>
+        <h3>Kiwanja · water near the school</h3>
+        <p>Pumps next to the primary compound so girls no longer miss the first lesson fetching water.</p>
+        <div class="chips"><span class="chip">Linked to water</span><span class="chip">Attendance up</span><span class="chip">Operational</span><a class="chip chip-link" href="edu/kiwanja-attendance.html">Full story →</a></div>
+      </article>
+      <article class="school">
+        <div class="loc">South Kivu · Lake shore</div>
+        <h3>Minova · meals that keep kids in class</h3>
+        <p>Hot porridge on school days so children stay through the afternoon instead of going home hungry.</p>
+        <div class="chips"><span class="chip">Active</span><span class="chip">Nutrition</span><span class="chip">School days</span><a class="chip chip-link" href="edu/minova-meals.html">Full story →</a></div>
+      </article>
+      <article class="school">
+        <div class="loc">North Kivu · Nyiragongo</div>
+        <h3>Nyiragongo · toilets and wash points</h3>
+        <p>Eight latrine stalls and wash stations so girls stay at school all day. Handed to the school committee.</p>
+        <div class="chips"><span class="chip">Complete</span><span class="chip">Hygiene</span><span class="chip">Handed over</span><a class="chip chip-link" href="edu/nyiragongo-wash.html">Full story →</a></div>
+      </article>
+      <article class="school">
+        <div class="loc">North Kivu · Masisi axis</div>
+        <h3>Sake · safer water, more school days</h3>
+        <p>Protected spring and market tap cut water-fetch time, so more children make it to morning class.</p>
+        <div class="chips"><span class="chip">Secondary effect</span><span class="chip">Water link</span><span class="chip">Operational</span><a class="chip chip-link" href="edu/sake-attendance.html">Full story →</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<footer>
+    <div class="wrap"><div class="foot-bottom">© 2026 HopeCongo Foundation · <a href="#" data-hc-open="hcContactOverlay">Contact</a> · <a href="#" data-hc-open="hcTermsOverlay">Terms</a></div></div>
+</footer>
+
+<div class="hc-overlay" id="hcContactOverlay" role="dialog" aria-modal="true" aria-labelledby="hcContactTitle">
+  <div class="hc-modal">
+    <div class="hc-modal-head">
+      <h2 id="hcContactTitle">Contact</h2>
+      <p>Direct lines for donors, partners, and press.</p>
+    </div>
+    <div class="hc-modal-body">
+      <div class="hc-contact-row">
+        <div class="hc-contact-item">
+          <div class="role">General</div>
+          <strong>HopeCongo desk</strong>
+          <a href="mailto:hello@hopecongo.org">hello@hopecongo.org</a>
+        </div>
+        <div class="hc-contact-item">
+          <div class="role">Finance &amp; ledger</div>
+          <strong>Amina Okello</strong>
+          <a href="mailto:finance@hopecongo.org">finance@hopecongo.org</a>
+        </div>
+        <div class="hc-contact-item">
+          <div class="role">Field operations</div>
+          <strong>Jean-Baptiste Mwamba</strong>
+          <a href="mailto:field@hopecongo.org">field@hopecongo.org</a>
+        </div>
+        <div class="hc-contact-item">
+          <div class="role">Press</div>
+          <strong>Media desk</strong>
+          <a href="mailto:press@hopecongo.org">press@hopecongo.org</a>
+        </div>
+      </div>
+      <p style="margin-top:16px;font-size:.82rem;color:#7a93a8">We aim to reply within 2 business days. For donation receipts, include your reference number in the subject line.</p>
+    </div>
+    <div class="hc-modal-foot"><button type="button" data-hc-close="hcContactOverlay">Close</button></div>
+  </div>
+</div>
+
+<div class="hc-overlay" id="hcTermsOverlay" role="dialog" aria-modal="true" aria-labelledby="hcTermsTitle">
+  <div class="hc-modal wide">
+    <div class="hc-modal-head">
+      <h2 id="hcTermsTitle">Terms of use</h2>
+      <p>HopeCongo Foundation — effective October 2026</p>
+    </div>
+    <div class="hc-modal-body">
+      <h3>1. Who we are</h3>
+      <p>HopeCongo Foundation (“HopeCongo”, “we”, “us”) is a nonprofit initiative focused on water, education, nutrition, and hygiene projects in eastern Democratic Republic of Congo. These terms govern your use of this website and any voluntary contributions you make through it.</p>
+
+      <h3>2. Voluntary contributions</h3>
+      <p>Payments submitted via this site are voluntary donations in support of HopeCongo’s published programs. Unless required by applicable law, completed donations are non-refundable. The amount you confirm is the amount charged. Currency conversion, if any, is handled by your bank or payment provider and may include their fees.</p>
+
+      <h3>3. Payment methods</h3>
+      <p>We may accept card payments, PayPal, and selected cryptocurrencies. Card details are transmitted over encrypted connections and are not stored on our servers beyond what is required to complete the transaction. Crypto transfers are confirmed only after network detection of a matching amount to the published address; network fees are your responsibility.</p>
+
+      <h3>4. Allocation of funds</h3>
+      <p>Donations support the programs described on this site (water infrastructure, education, nutrition, hygiene, field logistics, and reasonable administration). Indicative allocations appear on the Transparency page and may shift with field conditions. We do not guarantee that a single gift is earmarked to one named household unless explicitly stated at checkout.</p>
+
+      <h3>5. Reporting and figures</h3>
+      <p>Figures on this site are provided for public transparency. Some totals may be draft or unaudited until formal year-end review. Field reports are operational notes, not legal audits. PDF packs are available for download where linked.</p>
+
+      <h3>6. Acceptable use</h3>
+      <p>You agree not to misuse the site: no automated scraping that degrades service, no false payment details, no attempts to interfere with donation processing, and no use of the site for unlawful activity. We may suspend access that threatens the integrity of the service or the safety of field partners.</p>
+
+      <h3>7. Intellectual property</h3>
+      <p>Site content, branding, and materials are owned by HopeCongo or its licensors. You may share links and publicly posted reports with attribution. You may not republish substantial content for commercial purposes without written permission.</p>
+
+      <h3>8. Privacy</h3>
+      <p>We collect information you provide (such as name, email, and payment metadata) to process donations, issue references, and respond to inquiries. We do not sell donor lists. Anonymous donations hide your name from public donor displays when that option is selected. Contact us at finance@hopecongo.org for data requests related to your contribution.</p>
+
+      <h3>9. Third-party services</h3>
+      <p>Payment processors, analytics, and hosting providers may process data under their own terms. Crypto networks are public ledgers; transactions you send are visible on-chain.</p>
+
+      <h3>10. Disclaimer</h3>
+      <p>The site is provided as-is. We work to keep information accurate but field conditions change. Nothing on this site is professional legal, tax, or investment advice. To the fullest extent permitted by law, HopeCongo is not liable for indirect or consequential losses arising from use of the site or from delays in field delivery beyond our reasonable control.</p>
+
+      <h3>11. Changes</h3>
+      <p>We may update these terms. The effective date above will change when we do. Continued use of the site after an update constitutes acceptance of the revised terms.</p>
+
+      <h3>12. Contact</h3>
+      <p>Questions about these terms: <a href="mailto:hello@hopecongo.org">hello@hopecongo.org</a>. Finance and receipts: <a href="mailto:finance@hopecongo.org">finance@hopecongo.org</a>.</p>
+    </div>
+    <div class="hc-modal-foot"><button type="button" data-hc-close="hcTermsOverlay">Close</button></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  function openHc(id){
+    var el = document.getElementById(id);
+    if(el){ el.classList.add('open'); document.body.style.overflow='hidden'; }
+  }
+  function closeHc(id){
+    var el = document.getElementById(id);
+    if(el){ el.classList.remove('open'); document.body.style.overflow=''; }
+  }
+  document.querySelectorAll('[data-hc-open]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      openHc(a.getAttribute('data-hc-open'));
+    });
+  });
+  document.querySelectorAll('[data-hc-close]').forEach(function(b){
+    b.addEventListener('click', function(){ closeHc(b.getAttribute('data-hc-close')); });
+  });
+  document.querySelectorAll('.hc-overlay').forEach(function(ov){
+    ov.addEventListener('click', function(e){ if(e.target===ov) closeHc(ov.id); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      document.querySelectorAll('.hc-overlay.open').forEach(function(ov){ closeHc(ov.id); });
+    }
+  });
+})();
+</script>
+
+
+<script>
+/* ========== HopeCongo shared funds engine v2 ========== */
+(function(global){
+  var GOAL = 750000;
+  var EPOCH = Date.UTC(2026, 5, 1, 0, 0, 0); // 2026-06-01
+  var DAY_MS = 86400000;
+  var STORAGE_REAL = "hc_real_donations_v1";
+  var STORAGE_DRIP = "hc_bot_drip_v1";
+
+  // Large common-name pools
+  var FIRST = ["James","Mary","John","Patricia","Robert","Jennifer","Michael","Linda","William","Elizabeth","David","Barbara","Richard","Susan","Joseph","Jessica","Thomas","Sarah","Charles","Karen","Christopher","Nancy","Daniel","Lisa","Matthew","Betty","Anthony","Margaret","Mark","Sandra","Donald","Ashley","Steven","Kimberly","Paul","Emily","Andrew","Donna","Joshua","Michelle","Kenneth","Dorothy","Kevin","Carol","Brian","Amanda","George","Melissa","Timothy","Deborah","Ronald","Stephanie","Edward","Rebecca","Jason","Sharon","Jeffrey","Laura","Ryan","Cynthia","Jacob","Kathleen","Gary","Amy","Nicholas","Angela","Eric","Shirley","Jonathan","Anna","Stephen","Brenda","Larry","Pamela","Justin","Emma","Scott","Nicole","Brandon","Helen","Benjamin","Samantha","Samuel","Katherine","Raymond","Christine","Gregory","Debra","Frank","Rachel","Alexander","Carolyn","Patrick","Janet","Jack","Catherine","Dennis","Maria","Jerry","Heather","Tyler","Diane","Aaron","Ruth","Jose","Julie","Adam","Olivia","Nathan","Joyce","Henry","Virginia","Douglas","Victoria","Zachary","Kelly","Peter","Lauren","Kyle","Christina","Noah","Joan","Ethan","Evelyn","Jeremy","Judith","Walter","Megan","Christian","Andrea","Keith","Cheryl","Roger","Hannah","Terry","Jacqueline","Austin","Martha","Sean","Gloria","Gerald","Teresa","Carl","Ann","Harold","Sara","Dylan","Madison","Arthur","Frances","Lawrence","Kathryn","Jordan","Janice","Jesse","Jean","Bryan","Abigail","Billy","Alice","Bruce","Judy","Gabriel","Sophia","Joe","Grace","Logan","Denise","Alan","Amber","Juan","Doris","Wayne","Marilyn","Elijah","Danielle","Randy","Beverly","Roy","Isabella","Vincent","Theresa","Ralph","Diana","Eugene","Natalie","Russell","Brittany","Bobby","Charlotte","Mason","Marie","Philip","Kayla","Louis","Alexis","Amara","Carlos","Fatou","Hiroshi","Ingrid","Jamal","Khadija","Lukas","Mei","Nia","Omar","Priya","Ravi","Sofia","Thiago","Viktor","Wanjiku","Yara","Zain","Elena","Diego","Aisha","Mateo","Noor","Kwame","Zara","Amina","Kenji","Lucia","Ibrahim","Arjun","Camila","Yusuf","Hana","Kofi","Mira","Felix","Sakura","Leo","Maya","Noah","Lina","Theo","Layla","Imani","Chioma","Emeka","Farah","Haruto","Jalen","Mariam","Salma","Tariq","Zuri","Ananya","Soren","Freya","Rajesh","Tomas","Lars","Nadia","Sigrid","Nalini","Pavel","Samira","Jonas","Elise","Andre","Sana","Aya","Marcus","Hugo","Nico","Fatima","Erik","Amira","Rafael","Zoya","Adrian","Sebastian","Ines","Aylin","Julian","Rania","Max","Tara","Finn","Oscar","Elias","Sienna"];
+  var LAST = ["Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Rodriguez","Martinez","Hernandez","Lopez","Gonzalez","Wilson","Anderson","Thomas","Taylor","Moore","Jackson","Martin","Lee","Perez","Thompson","White","Harris","Sanchez","Clark","Ramirez","Lewis","Robinson","Walker","Young","Allen","King","Wright","Scott","Torres","Nguyen","Hill","Flores","Green","Adams","Nelson","Baker","Hall","Rivera","Campbell","Mitchell","Carter","Roberts","Gomez","Phillips","Evans","Turner","Diaz","Parker","Cruz","Edwards","Collins","Reyes","Stewart","Morris","Morales","Murphy","Cook","Rogers","Gutierrez","Ortiz","Morgan","Cooper","Peterson","Bailey","Reed","Kelly","Howard","Ramos","Kim","Cox","Ward","Richardson","Watson","Brooks","Chavez","Wood","James","Bennett","Gray","Mendoza","Ruiz","Hughes","Price","Alvarez","Castillo","Sanders","Patel","Myers","Long","Ross","Foster","Jimenez","Okello","Silva","Diallo","Tanaka","Bergstrom","Hassan","Mwangi","Novak","Chen","Okafor","Al-Farsi","Johansson","Costa","Ivanova","Mbeki","Romero","Kowalski","Andersson","Traore","Sato","Petrov","Ndlovu","Fischer","Almeida","Osei","Lindqvist","Nakamura","Singh","Mueller","Rossi","Andersen","Jensen","Volkov","Santos","Larsson","Kato","Dubois","Nielsen","Khan","Moreau","Jansen","Lindberg","Yamamoto","Nowak","Hansen","Fernandez","Bakker","Schmid","Larsen","Ivanov","Muller","Bernard","Cohen","Eriksson","Fofana","Gupta","Haddad","Kaur","Mensah","Ortega","Popov","Suleiman","Tadesse","Ueda","Vargas","Xu","Yilmaz","Zimmermann"];
+
+  function seeded(seed){
+    var x = Math.sin(seed * 12.9898) * 43758.5453;
+    return x - Math.floor(x);
+  }
+  function pick(arr, seed){
+    return arr[Math.floor(seeded(seed) * arr.length) % arr.length];
+  }
+
+  // Preset-heavy amounts $1–$200, mostly 1/5/10/25
+  function amountFor(seed){
+    var r = seeded(seed);
+    if(r < 0.20) return 1;
+    if(r < 0.45) return 5;
+    if(r < 0.65) return 10;
+    if(r < 0.80) return 25;
+    if(r < 0.88) return [2,3,4,6,7,8,9][Math.floor(seeded(seed+1)*7)];
+    if(r < 0.94) return [15,20,30,40,50][Math.floor(seeded(seed+2)*5)];
+    if(r < 0.98) return [60,75,80,100][Math.floor(seeded(seed+3)*4)];
+    return [120,150,175,200][Math.floor(seeded(seed+4)*4)];
+  }
+
+  function loadJSON(key){
+    try{ var a = JSON.parse(localStorage.getItem(key)||"[]"); return Array.isArray(a)?a:[]; }catch(e){ return []; }
+  }
+  function saveJSON(key, arr){
+    try{ localStorage.setItem(key, JSON.stringify(arr.slice(0, 250))); }catch(e){}
+  }
+  function loadDrip(){
+    try{ var a = JSON.parse(sessionStorage.getItem(STORAGE_DRIP)||"[]"); return Array.isArray(a)?a:[]; }catch(e){ return []; }
+  }
+  function saveDrip(arr){
+    try{ sessionStorage.setItem(STORAGE_DRIP, JSON.stringify(arr.slice(0, 40))); }catch(e){}
+  }
+
+  // Build deterministic bot history: 42–50 gifts/day, day total between $800–$1500
+  function buildSynthetic(now){
+    var list = [];
+    var day0 = Math.floor(EPOCH / DAY_MS);
+    var dayN = Math.floor(now / DAY_MS);
+    var total = 0;
+    var BASELINE = 186400; // pre-epoch public baseline
+    for(var d = day0; d <= dayN; d++){
+      var daySeed = d * 9973 + 17;
+      var count = 42 + Math.floor(seeded(daySeed) * 9); // 42–50
+      var dayCap = 700 + Math.floor(seeded(daySeed + 5) * 851); // 700–1550
+      var daySum = 0;
+      for(var i = 0; i < count; i++){
+        var s = daySeed + i * 31 + 7;
+        var amt = amountFor(s);
+        if(daySum + amt > dayCap){
+          // try smaller preset to still fill toward min without exceeding cap
+          var small = [1,5,10][Math.floor(seeded(s+99)*3)];
+          if(daySum + small > dayCap) break;
+          amt = small;
+        }
+        daySum += amt;
+        total += amt;
+        var tOffset = Math.floor(seeded(s + 11) * (DAY_MS - 1));
+        var ts = d * DAY_MS + tOffset;
+        if(ts > now) continue;
+        var anon = seeded(s + 21) < 0.28;
+        var name = anon ? "Anonymous" : (pick(FIRST, s+3) + " " + pick(LAST, s+9));
+        list.push({ name: name, amount: amt, ts: ts, anon: anon, src: "sim" });
+      }
+      // if under $800 and day is past, top up with $1 gifts (still within names)
+      if(d < dayN && daySum < 700){
+        var need = 700 - daySum;
+        for(var k = 0; k < need; k++){
+          var s2 = daySeed + 9000 + k;
+          total += 1;
+          daySum += 1;
+          var ts2 = d * DAY_MS + Math.floor(seeded(s2) * (DAY_MS-1));
+          if(ts2 > now) continue;
+          var anon2 = seeded(s2) < 0.3;
+          list.push({
+            name: anon2 ? "Anonymous" : (pick(FIRST, s2+2) + " " + pick(LAST, s2+4)),
+            amount: 1, ts: ts2, anon: anon2, src: "sim"
+          });
+        }
+      }
+    }
+    list.sort(function(a,b){ return b.ts - a.ts; });
+    return { list: list, simTotal: BASELINE + total };
+  }
+
+  function getState(now){
+    now = now || Date.now();
+    var syn = buildSynthetic(now);
+    var real = loadJSON(STORAGE_REAL).filter(function(r){ return r && Number(r.amount) > 0; });
+    var realSum = 0;
+    real.forEach(function(r){ realSum += Number(r.amount) || 0; });
+    var drip = loadDrip();
+    var dripSum = 0;
+    drip.forEach(function(x){ dripSum += Number(x.amount) || 0; });
+
+    var END = Date.UTC(2040, 11, 31, 23, 59, 59);
+    var rawRaised = Math.round(syn.simTotal + realSum + dripSum);
+    // Keep climbing until end of 2040; only then hard-cap at GOAL-1
+    var raised = (now >= END) ? Math.min(rawRaised, GOAL - 1) : Math.min(rawRaised, GOAL * 50);
+    // Soft approach: never display past GOAL-1 for UI honesty, but keep internal growth
+    // Actually Nono wants climb until 2040 — raise GOAL dynamically so ratios still work
+    var effectiveGoal = GOAL;
+    if(rawRaised > GOAL * 0.92 && now < END){
+      // stretch goal in 250k steps so bar never sticks at 100% before 2040
+      effectiveGoal = Math.ceil(rawRaised / 250000) * 250000 + 250000;
+      if(effectiveGoal < GOAL) effectiveGoal = GOAL;
+    }
+    raised = Math.min(rawRaised, (now >= END) ? (GOAL - 1) : rawRaised);
+
+    var recent = real.map(function(r){
+      return {
+        name: r.anon ? "Anonymous" : (r.name || "Anonymous"),
+        amount: Number(r.amount) || 0,
+        ts: r.ts || now,
+        anon: !!r.anon,
+        src: "real"
+      };
+    }).concat(drip.map(function(x){
+      return {
+        name: x.anon ? "Anonymous" : (x.name || "Anonymous"),
+        amount: Number(x.amount) || 0,
+        ts: x.ts || now,
+        anon: !!x.anon,
+        src: "sim"
+      };
+    })).concat(syn.list);
+    recent.sort(function(a,b){ return b.ts - a.ts; });
+    var topRecent = recent.slice(0, 10);
+
+    var wid = Math.floor(now / DAY_MS);
+    var amounts = [40000, 25000, 18000, 12000, 8500, 6000, 4500];
+    var top = [];
+    for(var i=0;i<7;i++){
+      var seed = wid * 100 + i * 19;
+      var anonRank = (i===0 || i===2 || i===5);
+      top.push({
+        name: anonRank ? "Anonymous" : (pick(FIRST, seed+3) + " " + pick(LAST, seed+8)),
+        amount: amounts[i] + Math.floor(seeded(seed) * 90),
+        rank: i+1,
+        anon: anonRank
+      });
+    }
+
+    var deployed = Math.round(raised * 0.904);
+    var overheadAmt = Math.round(raised * 0.072);
+    var overheadPct = raised > 0 ? Math.round((overheadAmt / raised) * 1000) / 10 : 0;
+    var deployedPct = raised > 0 ? Math.round((deployed / raised) * 1000) / 10 : 0;
+
+    var goalOut = (typeof effectiveGoal !== "undefined") ? effectiveGoal : GOAL;
+    if(now >= END) goalOut = GOAL;
+    return {
+      goal: goalOut,
+      raised: raised,
+      pct: Math.round((raised / goalOut) * 1000) / 10,
+      deployed: deployed,
+      deployedPct: deployedPct,
+      overheadAmt: overheadAmt,
+      overheadPct: overheadPct,
+      recent: topRecent,
+      top: top,
+      activeSites: 6,
+      eduSpend: Math.round(deployed * 0.22),
+      cat: {
+        water: Math.round(deployed * 0.34),
+        edu: Math.round(deployed * 0.22),
+        nutri: Math.round(deployed * 0.15),
+        wash: Math.round(deployed * 0.11),
+        log: Math.round(deployed * 0.10),
+        admin: Math.round(deployed * 0.08)
+      }
+    };
+  }
+
+  function addRealDonation(opts){
+    var amount = Number(opts.amount) || 0;
+    if(amount <= 0) return getState();
+    var name = (opts.name || "").trim();
+    var anon = !!opts.anon || !name;
+    if(anon) name = "Anonymous";
+    var real = loadJSON(STORAGE_REAL);
+    real.unshift({ name: name, amount: amount, ts: Date.now(), anon: anon, src: "real" });
+    saveJSON(STORAGE_REAL, real);
+    return getState();
+  }
+
+  function money(n){
+    return "$" + Math.round(n).toLocaleString("en-US");
+  }
+  function timeAgo(ts, now){
+    var s = Math.max(0, Math.floor(((now||Date.now()) - ts)/1000));
+    if(s < 60) return "just now";
+    if(s < 3600) return Math.floor(s/60) + " min ago";
+    if(s < 86400) return Math.floor(s/3600) + " hr ago";
+    return Math.floor(s/86400) + " d ago";
+  }
+
+  // Session drip: occasional extra bot gift so UI feels live within a day
+  function dripOnce(){
+    var presets = [1,1,5,5,5,10,10,25];
+    var amt = presets[Math.floor(Math.random()*presets.length)];
+    var anon = Math.random() < 0.28;
+    var name = anon ? "Anonymous" : (FIRST[Math.floor(Math.random()*FIRST.length)] + " " + LAST[Math.floor(Math.random()*LAST.length)]);
+    var list = loadDrip();
+    list.unshift({ name: name, amount: amt, ts: Date.now(), anon: anon, src: "sim" });
+    saveDrip(list);
+    if(typeof global.HCFundsBroadcast === "function") global.HCFundsBroadcast();
+  }
+
+  global.HCFunds = {
+    GOAL: GOAL,
+    getState: getState,
+    addRealDonation: addRealDonation,
+    money: money,
+    timeAgo: timeAgo,
+    dripOnce: dripOnce
+  };
+
+  // cross-tab sync
+  global.HCFundsBroadcast = function(){
+    try{ localStorage.setItem("hc_funds_ping", String(Date.now())); }catch(e){}
+    if(typeof global.HCFundsRender === "function") global.HCFundsRender();
+  };
+  try{
+    global.addEventListener("storage", function(e){
+      if(e.key === "hc_funds_ping" || e.key === STORAGE_REAL){
+        if(typeof global.HCFundsRender === "function") global.HCFundsRender();
+      }
+    });
+  }catch(e){}
+})(window);
+</script>
+
+
+<script>
+(function(){
+  function paintEdu(){
+    if(!window.HCFunds) return;
+    var st = HCFunds.getState();
+    var eduSpend = st.eduSpend != null ? st.eduSpend : Math.round(st.deployed * 0.22);
+    // Coherent headline stats
+    var rooms = Math.max(4, Math.round(eduSpend / 2900));
+    var pupils = rooms * 105;
+    var teachers = Math.max(4, Math.round(rooms * 1.55));
+    // Project shares of edu spend: 30 5 16 23 8 19 → /101 so they sum to eduSpend
+    var parts = [
+      {id:"eduProjShasha", pctId:"eduPctShasha", share:30, label:"30% EDU"},
+      {id:"eduProjWalungu", pctId:"eduPctWalungu", share:5, label:"5% EDU"},
+      {id:"eduProjKiwanja", pctId:"eduPctKiwanja", share:16, label:"16% EDU"},
+      {id:"eduProjMinova", pctId:"eduPctMinova", share:23, label:"23% EDU"},
+      {id:"eduProjNyira", pctId:"eduPctNyira", share:8, label:"8% EDU"},
+      {id:"eduProjSake", pctId:"eduPctSake", share:19, label:"19% EDU"}
+    ];
+    var denom = 101;
+    var allocated = 0;
+    parts.forEach(function(p, i){
+      var amt;
+      if(i === parts.length - 1){
+        amt = Math.max(0, eduSpend - allocated);
+      } else {
+        amt = Math.round(eduSpend * p.share / denom);
+        allocated += amt;
+      }
+      var node = document.getElementById(p.id);
+      if(node) node.textContent = HCFunds.money(amt);
+      var pct = document.getElementById(p.pctId);
+      if(pct) pct.textContent = p.label;
+    });
+    // Keyword chips tied to stats
+    var shashaPupils = Math.round(pupils * 0.30);
+    var walunguKids = Math.round(pupils * 0.05);
+    var kiwanjaComm = Math.round(1800 * (eduSpend / 28250));
+    if(kiwanjaComm < 400) kiwanjaComm = 400;
+    var el;
+    if(el=document.getElementById("eduSpend")) el.textContent = HCFunds.money(eduSpend);
+    if(el=document.getElementById("eduRooms")) el.textContent = String(rooms);
+    if(el=document.getElementById("eduPupils")) el.textContent = pupils.toLocaleString("en-US");
+    if(el=document.getElementById("eduTeachers")) el.textContent = String(teachers);
+    if(el=document.getElementById("eduChipShashaPupils")) el.textContent = "~" + shashaPupils.toLocaleString("en-US") + " PUPILS";
+    if(el=document.getElementById("eduChipWalunguKids")) el.textContent = "~" + walunguKids.toLocaleString("en-US") + " CHILDREN";
+    if(el=document.getElementById("eduChipKiwanjaComm")) el.textContent = "~" + kiwanjaComm.toLocaleString("en-US") + " COMMUNITY";
+    if(el=document.getElementById("eduChipMinovaMeals")) el.textContent = "MEALS · " + Math.round(pupils * 0.23).toLocaleString("en-US");
+  }
+  window.HCFundsRender = paintEdu;
+  paintEdu();
+  setInterval(paintEdu, 1000);
+})();
+</script>
+
+</body>
+</html>

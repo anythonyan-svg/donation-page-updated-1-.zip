@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stories – HopeCongo Foundation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#060b14;--deep:#0a1628;--panel:#0d1b2a;--line:rgba(34,211,238,.12);
+  --cyan:#22d3ee;--mint:#34d399;--violet:#a78bfa;--rose:#fb7185;
+  --text:#e8f1f8;--muted:#7a93a8;--card:#0f2137;--border:rgba(34,211,238,.12);
+  --glow:0 0 40px rgba(34,211,238,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--text);line-height:1.65;font-size:15px;min-height:100vh}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+
+/* Header — match transparency */
+header{background:rgba(6,11,20,.85);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--line)}
+.header-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:16px}
+.brand{font-size:1.35rem;font-weight:800;letter-spacing:-.03em;color:#fff}
+.brand span{color:var(--cyan);text-shadow:0 0 20px rgba(34,211,238,.5)}
+nav{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+nav a{color:var(--muted);font-weight:500;font-size:.88rem;padding:9px 14px;border-radius:10px;transition:all .2s}
+nav a:hover{color:var(--cyan);background:rgba(34,211,238,.08)}
+nav a.active{color:var(--cyan);background:rgba(34,211,238,.12);font-weight:600}
+.nav-donate{background:linear-gradient(135deg,var(--cyan),#06b6d4);color:#041016!important;padding:10px 20px!important;border-radius:999px!important;font-weight:700!important;box-shadow:0 0 24px rgba(34,211,238,.35)}
+
+/* Hero — transparency style */
+.hero{padding:48px 0 28px;position:relative;overflow:hidden;border-bottom:1px solid var(--line);text-align:center}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 40%,rgba(34,211,238,.12),transparent 55%),
+    radial-gradient(ellipse 50% 40% at 80% 20%,rgba(167,139,250,.1),transparent 50%),
+    linear-gradient(180deg,var(--deep),var(--navy));
+  pointer-events:none;
+}
+.hero .grid-bg{
+  position:absolute;inset:0;opacity:.35;
+  background-image:linear-gradient(rgba(34,211,238,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.06) 1px,transparent 1px);
+  background-size:48px 48px;mask-image:radial-gradient(ellipse at center,black 20%,transparent 75%);
+}
+.hero .wrap{position:relative;z-index:1}
+.hero .tag{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:#22d3ee;text-shadow:0 0 18px rgba(34,211,238,.55);margin-bottom:12px;font-family:'JetBrains Mono',monospace}
+.hero h1{font-size:clamp(1.9rem,4.2vw,2.7rem);font-weight:800;letter-spacing:-.03em;margin-bottom:14px;line-height:1.15}
+.hero h1.grad,.hero h1 .grad{background:linear-gradient(90deg,var(--cyan),var(--mint),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p.lead{font-size:1.02rem;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.6}
+
+/* Category chips as live-strip cards */
+.live-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px;
+}
+.chip-filter{
+  background:rgba(12,26,42,.9);border:1px solid rgba(34,211,238,.14);border-radius:16px;
+  padding:18px 16px;text-align:left;cursor:pointer;transition:border-color .2s, box-shadow .2s, transform .15s;
+  font-family:inherit;color:inherit;width:100%;
+}
+.chip-filter:hover{border-color:rgba(34,211,238,.35);box-shadow:0 0 24px rgba(34,211,238,.08);transform:translateY(-2px)}
+.chip-filter.active{border-color:rgba(34,211,238,.5);box-shadow:0 0 28px rgba(34,211,238,.15);background:rgba(34,211,238,.06)}
+.chip-filter .label{font-size:.68rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.chip-filter .val{font-size:1.25rem;font-weight:800;color:#22d3ee;letter-spacing:-.02em;text-shadow:0 0 20px rgba(34,211,238,.5)}
+.chip-filter .sub{font-size:.75rem;color:var(--muted);margin-top:4px}
+.chip-filter[data-filter="families"] .val{color:var(--rose);text-shadow:0 0 20px rgba(251,113,133,.4)}
+.chip-filter[data-filter="school"] .val{color:var(--violet);text-shadow:0 0 20px rgba(167,139,250,.4)}
+.chip-filter[data-filter="progress"] .val{color:var(--mint);text-shadow:0 0 20px rgba(52,211,153,.4)}
+
+/* Filter bar */
+.bar{
+  position:sticky;top:56px;z-index:80;padding:14px 0;
+  background:rgba(6,11,20,.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.bar-inner{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.bar input{
+  flex:1;min-width:160px;max-width:280px;
+  background:rgba(12,26,42,.9);border:1px solid rgba(34,211,238,.18);
+  border-radius:12px;padding:10px 14px;color:var(--text);font-size:.9rem;
+  font-family:inherit;outline:none;transition:border-color .2s;
+}
+.bar input:focus{border-color:rgba(34,211,238,.45)}
+.bar input::placeholder{color:var(--muted)}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pills button{
+  background:transparent;border:1px solid rgba(34,211,238,.15);border-radius:999px;
+  padding:7px 14px;font-size:.8rem;font-weight:600;color:var(--muted);
+  cursor:pointer;font-family:inherit;transition:all .2s;
+}
+.pills button:hover{border-color:rgba(34,211,238,.35);color:var(--cyan)}
+.pills button.active{background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.4);color:var(--cyan)}
+.showing{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);margin-left:auto}
+
+/* Story grid */
+main.wrap{padding-top:32px;padding-bottom:48px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}.live-strip{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.live-strip{grid-template-columns:1fr}nav a:not(.nav-donate):not(.active){display:none}}
+
+/* Story cards */
+.sc{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  overflow:hidden;transition:border-color .2s, box-shadow .2s;
+}
+.sc:hover{border-color:rgba(34,211,238,.28);box-shadow:0 0 28px rgba(34,211,238,.06)}
+.sc.open{border-color:rgba(34,211,238,.4);box-shadow:0 0 32px rgba(34,211,238,.12)}
+.sc-hit{
+  display:block;width:100%;text-align:left;background:none;border:none;
+  padding:18px 18px 16px;cursor:pointer;color:inherit;font-family:inherit;
+}
+.sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sc-place{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.8px;text-transform:uppercase;color:var(--cyan)}
+.sc[data-type="families"] .sc-place{color:var(--rose)}
+.sc[data-type="school"] .sc-place{color:var(--violet)}
+.sc[data-type="progress"] .sc-place{color:var(--mint)}
+.sc-go{
+  width:28px;height:28px;border-radius:50%;border:1px solid var(--border);
+  position:relative;transition:transform .35s cubic-bezier(.34,1.4,.64,1), background .2s, border-color .2s;
+}
+.sc-go::before,.sc-go::after{content:"";position:absolute;background:var(--cyan);transition:transform .3s}
+.sc-go::before{width:10px;height:2px;left:8px;top:12px}
+.sc-go::after{width:2px;height:10px;left:12px;top:8px}
+.sc.open .sc-go{transform:rotate(45deg);background:rgba(34,211,238,.15);border-color:var(--cyan)}
+.sc-hit h3{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;line-height:1.3;margin-bottom:6px}
+.sc-blurb{font-size:.86rem;color:var(--muted);line-height:1.45}
+.sc-draw{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.22,1,.36,1)}
+.sc.open .sc-draw{grid-template-rows:1fr}
+.sc-draw-inner{overflow:hidden}
+.sc.open .sc-draw-inner{padding:0 18px 18px;border-top:1px solid var(--border)}
+.sc-tags{display:flex;flex-wrap:wrap;gap:6px;padding-top:12px;margin-bottom:10px}
+.sc-tags span{font-family:'JetBrains Mono',monospace;font-size:.6rem;padding:3px 8px;border-radius:6px;background:rgba(34,211,238,.1);color:var(--cyan)}
+.sc-body{color:#b4c7d6;font-size:.9rem;line-height:1.7;max-width:68ch}
+.sc-body p{margin-bottom:10px;opacity:0;transform:translateY(6px);transition:opacity .35s, transform .35s}
+.sc.open .sc-body p{opacity:1;transform:none}
+.sc.open .sc-body p:nth-child(1){transition-delay:.05s}
+.sc.open .sc-body p:nth-child(2){transition-delay:.1s}
+.sc.open .sc-body p:nth-child(3){transition-delay:.15s}
+.sc.open .sc-body p:nth-child(4){transition-delay:.2s}
+
+.empty{display:none;text-align:center;padding:48px 20px;color:var(--muted);grid-column:1/-1}
+.empty strong{color:var(--cyan);display:block;margin-bottom:6px}
+
+footer{border-top:1px solid var(--line);padding:28px 0 20px;margin-top:12px;color:var(--muted)}
+.foot-bottom{text-align:center;font-size:.78rem}
+.foot-bottom a{color:var(--cyan);border-bottom:1px solid rgba(34,211,238,.3)}
+
+.overlay{display:none;position:fixed;inset:0;background:rgba(4,8,15,.75);backdrop-filter:blur(8px);z-index:300;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex!important}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:16px;max-width:440px;width:100%;padding:22px}
+.modal h2{margin-bottom:10px}
+.modal p{color:var(--muted);font-size:.9rem;margin-bottom:14px}
+.modal button{padding:10px 18px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--cyan),#06b6d4);color:#041016;font-weight:700;cursor:pointer;font-family:inherit}
+
+
+/* Universal soft cyan outer glow on cards/boxes */
+.live-cell, .chip-filter, .rail-card, .program-card, .value-card,
+.method-step, .village, .school, .panel, .report, .contact,
+.ledger-row, .sc, .pdf-card, .side-card, .prose, .tile {
+  box-shadow: 0 0 18px rgba(34,211,238,.14), 0 0 36px rgba(34,211,238,.07), inset 0 1px 0 rgba(34,211,238,.06);
+}
+.live-cell:hover, .chip-filter:hover, .rail-card:hover, .program-card:hover, .value-card:hover,
+.method-step:hover, .village:hover, .school:hover, .report:hover, .sc:hover, .pdf-card:hover, .tile:hover {
+  border-color: rgba(34,211,238,.42) !important;
+  box-shadow: 0 0 28px rgba(34,211,238,.28), 0 0 56px rgba(34,211,238,.12), inset 0 1px 0 rgba(34,211,238,.12) !important;
+}
+
+
+/* Hero title — screenshot match: tag + big gradient title only */
+.hero .tag{
+  font-size:.7rem !important;letter-spacing:2px !important;text-transform:uppercase !important;
+  font-weight:600 !important;color:#22d3ee !important;
+  text-shadow:0 0 18px rgba(34,211,238,.55) !important;
+  margin-bottom:14px !important;font-family:'JetBrains Mono',monospace !important;
+}
+.hero h1.grad, .hero h1{
+  font-size:clamp(1.75rem,4.2vw,2.75rem) !important;
+  font-weight:800 !important;letter-spacing:-.03em !important;
+  line-height:1.15 !important;margin-bottom:28px !important;
+  max-width:18ch;margin-left:auto;margin-right:auto;
+}
+.hero h1.grad{
+  background:linear-gradient(90deg,#22d3ee,#34d399,#a78bfa) !important;
+  -webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+}
+.hero p.lead{display:none !important}
+
+
+/* Stories top = transparency live-strip */
+.hero .live-strip{
+  display:grid !important;
+  grid-template-columns:repeat(4,1fr) !important;
+  gap:14px !important;
+  margin-top:28px !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  width:100% !important;
+}
+.hero .live-cell{
+  background:rgba(12,26,42,.9) !important;
+  border:1px solid rgba(34,211,238,.14) !important;
+  border-radius:16px !important;
+  padding:18px 16px !important;
+  text-align:left !important;
+  box-sizing:border-box !important;
+  box-shadow: 0 0 18px rgba(34,211,238,.14), 0 0 36px rgba(34,211,238,.07) !important;
+}
+.hero .live-cell .label{
+  font-size:.68rem !important;
+  letter-spacing:1.2px !important;
+  text-transform:uppercase !important;
+  color:#7a93a8 !important;
+  font-family:'JetBrains Mono',monospace !important;
+  margin-bottom:6px !important;
+}
+.hero .live-cell .val{
+  font-size:1.45rem !important;
+  font-weight:800 !important;
+  color:#22d3ee !important;
+  letter-spacing:-.02em !important;
+  text-shadow:0 0 24px rgba(34,211,238,.65),0 0 8px rgba(34,211,238,.45) !important;
+}
+.hero .live-cell .sub{
+  font-size:.75rem !important;
+  color:#7a93a8 !important;
+  margin-top:4px !important;
+}
+@media(max-width:900px){.hero .live-strip{grid-template-columns:1fr 1fr !important}}
+
+/* Library bar + grid polish */
+.bar{
+  position:sticky;top:64px;z-index:50;
+  background:rgba(6,11,20,.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(34,211,238,.12);
+  padding:14px 0;
+}
+.bar-inner{
+  display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+}
+#q{
+  flex:1;min-width:200px;
+  background:rgba(12,26,42,.95);
+  border:1px solid rgba(34,211,238,.2);
+  border-radius:12px;
+  padding:12px 16px;
+  color:#e8f1f8;font-size:.95rem;
+  outline:none;
+}
+#q:focus{border-color:rgba(34,211,238,.5);box-shadow:0 0 0 3px rgba(34,211,238,.12)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills button{
+  font-size:.78rem;font-weight:600;
+  padding:8px 14px;border-radius:999px;
+  border:1px solid rgba(34,211,238,.2);
+  background:rgba(12,26,42,.8);color:#7a93a8;
+  cursor:pointer;transition:.15s;
+}
+.pills button:hover{color:#22d3ee;border-color:rgba(34,211,238,.4)}
+.pills button.active{
+  background:rgba(34,211,238,.15);color:#22d3ee;
+  border-color:rgba(34,211,238,.45);
+  box-shadow:0 0 16px rgba(34,211,238,.15);
+}
+.showing{font-size:.8rem;color:#7a93a8;font-family:'JetBrains Mono',monospace;margin-left:auto}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;
+  padding:28px 0 48px;
+}
+.sc{
+  background:rgba(12,26,42,.95);
+  border:1px solid rgba(34,211,238,.14);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 0 18px rgba(34,211,238,.1);
+  transition:border-color .2s, box-shadow .2s, transform .15s;
+}
+.sc:hover{
+  border-color:rgba(34,211,238,.4);
+  box-shadow:0 0 28px rgba(34,211,238,.2);
+  transform:translateY(-2px);
+}
+.sc-hit{
+  width:100%;text-align:left;background:none;border:0;color:inherit;
+  padding:18px 18px 16px;cursor:pointer;font:inherit;
+}
+.sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sc-place{
+  font-size:.68rem;letter-spacing:1.2px;text-transform:uppercase;
+  color:#22d3ee;font-family:'JetBrains Mono',monospace;font-weight:600;
+}
+.sc-go::after{content:"→";color:#22d3ee;opacity:.7}
+.sc h3{font-size:1.05rem;font-weight:800;margin-bottom:8px;letter-spacing:-.02em;line-height:1.3}
+.sc-blurb{font-size:.88rem;color:#7a93a8;line-height:1.45}
+.sc-draw{display:none;border-top:1px solid rgba(34,211,238,.1)}
+.sc.open .sc-draw{display:block}
+.sc-draw-inner{padding:14px 18px 18px}
+.sc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.sc-tags span{
+  font-size:.68rem;padding:3px 8px;border-radius:6px;
+  background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);color:#7dd3fc;
+  font-family:'JetBrains Mono',monospace;
+}
+.sc-body{font-size:.9rem;color:#b4c7d6;line-height:1.55}
+.sc-body p{margin-bottom:10px}
+.sc-body p:last-child{margin-bottom:0}
+
+
+/* Top box subtitles — white like transparency */
+.hero .live-cell .sub,
+.live-cell .sub{
+  color:#e8f1f8 !important;
+  opacity:.9 !important;
+}
+
+
+/* Stories — sparse editorial flow */
+.stories-flow{padding:48px 0 80px}
+.flow-head{text-align:center;margin-bottom:28px}
+.flow-label{
+  font-size:.7rem;letter-spacing:2px;text-transform:uppercase;
+  color:#22d3ee;font-family:'JetBrains Mono',monospace;font-weight:600;
+  margin-bottom:8px;
+}
+.flow-hint{color:#7a93a8;font-size:.95rem}
+.flow-filters{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+  margin-bottom:40px;
+}
+.ff{
+  font-size:.78rem;font-weight:600;padding:8px 16px;border-radius:999px;
+  border:1px solid rgba(34,211,238,.18);background:transparent;color:#7a93a8;
+  cursor:pointer;transition:.15s;
+}
+.ff:hover{color:#22d3ee;border-color:rgba(34,211,238,.4)}
+.ff.active{
+  color:#041016;background:linear-gradient(135deg,#22d3ee,#06b6d4);
+  border-color:transparent;
+}
+.flow-list{max-width:720px;margin:0 auto}
+.note{
+  display:grid;grid-template-columns:56px 1fr;gap:8px 20px;
+  padding:0 0 36px;position:relative;
+}
+.note-rail{display:flex;flex-direction:column;align-items:center}
+.note-num{
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;
+  color:#22d3ee;letter-spacing:.05em;
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(34,211,238,.35);
+  background:rgba(12,26,42,.9);
+  box-shadow:0 0 20px rgba(34,211,238,.15);
+}
+.note-line{
+  flex:1;width:1px;margin-top:8px;
+  background:linear-gradient(180deg,rgba(34,211,238,.35),transparent);
+  min-height:24px;
+}
+.note:last-child .note-line{display:none}
+.note-place{
+  font-size:.68rem;letter-spacing:1.4px;text-transform:uppercase;
+  color:#22d3ee;font-family:'JetBrains Mono',monospace;font-weight:600;
+  margin-bottom:6px;
+}
+.note-title{
+  font-size:clamp(1.15rem,2.5vw,1.4rem);font-weight:800;
+  letter-spacing:-.02em;line-height:1.25;margin-bottom:8px;color:#e8f1f8;
+}
+.note-blurb{color:#9db0c2;font-size:.95rem;line-height:1.5;margin-bottom:12px;max-width:36em}
+.note-more{
+  background:none;border:0;color:#22d3ee;font-weight:700;font-size:.88rem;
+  cursor:pointer;padding:0;font-family:inherit;
+}
+.note-more:hover{text-decoration:underline}
+.note-full{margin-top:14px;padding-top:14px;border-top:1px solid rgba(34,211,238,.12)}
+.note-body{color:#b4c7d6;font-size:.92rem;line-height:1.6}
+.note-body p{margin-bottom:10px}
+.note[hidden]{display:none}
+@media(max-width:600px){
+  .note{grid-template-columns:36px 1fr;gap:6px 12px}
+  .note-num{width:32px;height:32px;font-size:.68rem}
+}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap header-row">
+    <a href="./index.html" class="brand">Hope<span>Congo</span></a>
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="./impact.html">Work</a>
+      <a href="./schools.html">Education</a>
+      <a href="./stories.html" class="active">Stories</a>
+      <a href="./transparency.html">Transparency</a>
+      <a href="./donate.html" class="nav-donate">Donation</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="tag">// field notes · kivu corridor</p>
+    <h1 class="grad">Voices from the Kivu corridor.</h1>
+
+    <div class="live-strip">
+      <div class="live-cell">
+        <div class="label">Field notes</div>
+        <div class="val cyan" id="libCount">—</div>
+        <div class="sub">in the library</div>
+      </div>
+      <div class="live-cell">
+        <div class="label">Villages</div>
+        <div class="val cyan">7</div>
+        <div class="sub">water &amp; sites</div>
+      </div>
+      <div class="live-cell">
+        <div class="label">Families</div>
+        <div class="val cyan">9</div>
+        <div class="sub">daily life</div>
+      </div>
+      <div class="live-cell">
+        <div class="label">School</div>
+        <div class="val cyan">4</div>
+        <div class="sub">rooms &amp; catch-up</div>
+      </div>
+    </div></div>
+</section>
+
+
+<section class="stories-flow">
+  <div class="wrap">
+    <div class="flow-head">
+      <p class="flow-label">Field notes</p>
+      <p class="flow-hint">One place. One change. Written short.</p>
+    </div>
+    <div class="flow-filters" role="tablist">
+      <button type="button" class="ff active" data-filter="all">All</button>
+      <button type="button" class="ff" data-filter="villages">Villages</button>
+      <button type="button" class="ff" data-filter="families">Families</button>
+      <button type="button" class="ff" data-filter="school">School</button>
+      <button type="button" class="ff" data-filter="progress">Progress</button>
+    </div>
+    <div class="flow-list" id="flowList">
+
+    <article class="note" data-type="villages">
+      <div class="note-rail">
+        <span class="note-num">01</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Sake axis</p>
+        <h2 class="note-title">When the queue became the clock</h2>
+        <p class="note-blurb">Mornings ran on jerrycans until the gravity line cut the walk.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Above the Sake market, the day started with container math and who could be spared for the path. The spring line was a second square—news and late school arrivals both began there.</p><p>After the protected spring and market tap, the farthest compounds gained back part of the morning. Commercial and domestic users still compete, so the association posted hours instead of hoping for goodwill.</p><p>Meetings could start nearer the agreed time because fewer members were still on the path. Progress measured in punctuality, not speeches.</p><p>HopeCongo funded capital and a first fittings kit. Queue law stays local; inspectors check flow and the spare box.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="villages">
+      <div class="note-rail">
+        <span class="note-num">02</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Kiwanja</p>
+        <h2 class="note-title">Four pumps, one service map</h2>
+        <p class="note-blurb">Scattered compounds shared a failure mode the committee could log.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Kiwanja is tracks, not a grid. Private bends and favours failed in the rains. Public pumps made load-sharing possible.</p><p>A September entry that swapped one seal was deliberately dull. Dull means the map still works.</p><p>Households still own roofs and latrines. The village gained a shared asset and a log format.</p><p>Field staff read the log before they praise pump handles against the sky.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="villages">
+      <div class="note-rail">
+        <span class="note-num">03</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Masisi</p>
+        <h2 class="note-title">Fence before praise</h2>
+        <p class="note-blurb">Cattle and drinkers cannot share an open spring head forever.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Paths crossed at the source for years. Blame moved faster than wire. Protection put posts in before any gravity-line celebration.</p><p>A cut strand is logged like a leak. Villages without a fence still walk farther for clearer water.</p><p>Commons stay common only when something physical blocks the easiest abuse.</p><p>Refusing to fund an unprotected source is respect for village time and money.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="villages">
+      <div class="note-rail">
+        <span class="note-num">04</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Corridor</p>
+        <h2 class="note-title">Agendas, not only alarms</h2>
+        <p class="note-blurb">Steady assets let secretaries post dates instead of shouting after every break.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Many villages met only in crisis. Panic attendance is not planning.</p><p>With systems running, agendas appeared in advance. Repair votes could wait for quorum.</p><p>HopeCongo observes when invited; it does not chair.</p><p>Fee discipline still varies. Notes refuse a uniform corridor myth.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="villages">
+      <div class="note-rail">
+        <span class="note-num">05</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Nyiragongo</p>
+        <h2 class="note-title">The yard is the noticeboard</h2>
+        <p class="note-blurb">Along the volcano road, the school compound is where word travels.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Dust, Goma traffic, compounds that double as landmarks. WASH on the yard changes who lingers after class.</p><p>Soap rotas at the gate leak outward when younger siblings copy what they see.</p><p>One block does not redesign a mountain slope. It strengthens a node the village already treats as central.</p><p>A mid-year rota that is still real means the node holds without permanent NGO staff.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="villages">
+      <div class="note-rail">
+        <span class="note-num">06</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Walungu</p>
+        <h2 class="note-title">Evening traffic, old roof</h2>
+        <p class="note-blurb">Lamps pulled a thin stream toward a room that already existed.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>The literacy circle borrowed community space. Dry-season evenings saw children and guardians where paths had gone quiet after dusk.</p><p>Attendance measures trust as much as pedagogy.</p><p>The scarce input is facilitators, not concrete.</p><p>Walungu stays on the education ledger so a no-building project is still counted.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="villages">
+      <div class="note-rail">
+        <span class="note-num">07</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">After launch</p>
+        <h2 class="note-title">Quiet months are the test</h2>
+        <p class="note-blurb">Ownership shows when nobody is filming.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>The test is a quiet month: fees still collected, log still written, spare seal still in the box.</p><p>Committees that pass ask for a specific part or a second training slot—not another ceremony.</p><p>Field packs prefer inspection dates over launch photos.</p><p>Ownership is boring. Boring is the goal.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="families">
+      <div class="note-rail">
+        <span class="note-num">08</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Water routes</p>
+        <h2 class="note-title">Two fewer trips</h2>
+        <p class="note-blurb">When children carried water, school competed with thirst.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Mothers and older sisters listed the routine without decoration. Girls lost more opening lessons when water ranked first.</p><p>Nearer taps cut repeat trips. Teachers saw fewer late marks—not a miracle enrolment spike.</p><p>Family gain is time and less wear on feet.</p><p>Interviews stay short. Families do not owe biographies for a pump.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="families">
+      <div class="note-rail">
+        <span class="note-num">09</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Minova</p>
+        <h2 class="note-title">After the break</h2>
+        <p class="note-blurb">Empty stomachs were a practical reason to leave.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Staff could predict who faded after noon. Term meals lowered the cost of staying for margin households.</p><p>Some families still choose chores or trade.</p><p>Stock against the roll stops silent expansion past budget.</p><p>Success is presence after noon, not the first-ladle photo.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="families">
+      <div class="note-rail">
+        <span class="note-num">10</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Filters</p>
+        <h2 class="note-title">Cracked pot, intact habit</h2>
+        <p class="note-blurb">Cleaning survived hardware failure.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Users demonstrated rinsing without prompts. Finished units meant missing hardware, not abandoned treatment.</p><p>Swap-outs reconnect habit to a working pot.</p><p>Logs note who actually rinses.</p><p>Public packs use counts, not addresses, unless consent says otherwise.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="families">
+      <div class="note-rail">
+        <span class="note-num">11</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Shasha teachers</p>
+        <h2 class="note-title">Pay that keeps the room open</h2>
+        <p class="note-blurb">Stipends can stop mid-year teacher exit.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Irregular pay pushes local teachers toward Goma trade. Pupils inherit rotation or an empty room.</p><p>Sample weeks and dual signatures exist because pressure invents ghost names.</p><p>The teacher’s family feels stability first; pupils feel continuity.</p><p>Narrow support—not a silent district payroll.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="families">
+      <div class="note-rail">
+        <span class="note-num">12</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Dawn queue</p>
+        <h2 class="note-title">Seniority is strategy</h2>
+        <p class="note-blurb">Posted hours need someone who will say no at opening.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Tactics appear fast: place-holding, child-planted jerrycans, cash for commercial priority.</p><p>Locked pumps as revenge punish everyone, including fee-payers.</p><p>Steel is easy. Dawn enforcement is scarce.</p><p>A fair line is progress before any ledger.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="families">
+      <div class="note-rail">
+        <span class="note-num">13</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">School gate</p>
+        <h2 class="note-title">Same tippy-tap for adults</h2>
+        <p class="note-blurb">Skipping parents produced clean hands at school only.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>A demo in the pickup window beats a workshop only the free can attend.</p><p>School-year soap is for the block; household bars are family cost.</p><p>Later visits ask if soap remains and if a guardian still recognises the tippy-tap.</p><p>Short shared instructions travel farther than pamphlets.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="families">
+      <div class="note-rail">
+        <span class="note-num">14</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Remittances</p>
+        <h2 class="note-title">Money changes the line</h2>
+        <p class="note-blurb">Better-off draws can crowd domestic users.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Some associations try commercial windows; others lean on women’s group pressure.</p><p>The job is keeping the asset usable for fee-paying domestic users.</p><p>Inequality does not vanish at the stand. Design can stop it from breaking the stand.</p><p>Honesty about this is part of family-centred notes.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="families">
+      <div class="note-rail">
+        <span class="note-num">15</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Compounds</p>
+        <h2 class="note-title">Three households, one path</h2>
+        <p class="note-blurb">Internal turns meet public queue rules at the gate.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Extended compounds negotiate who walks when before they reach the public stand.</p><p>Conflicts at the tap sometimes started at home.</p><p>Interviews map compound size when it explains use.</p><p>Design that pretends every household is nuclear misreads the line.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="families">
+      <div class="note-rail">
+        <span class="note-num">16</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Hard months</p>
+        <h2 class="note-title">Empty pot, full social cost</h2>
+        <p class="note-blurb">Fair fees can still hurt in a bad harvest.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Short arrears without cutting water keep legitimacy. Locking taps for small debts pushes families to unsafe sources.</p><p>Field advice favours graduated responses.</p><p>Family dignity is part of whether a point remains a public good.</p><p>Capital budgets rarely price this social load; notes should.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="school">
+      <div class="note-rail">
+        <span class="note-num">17</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Shasha</p>
+        <h2 class="note-title">Desks with the roofing plan</h2>
+        <p class="note-blurb">Fit-out booked so rooms could not sit empty a term.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Sixty desks match three rooms without a phantom second shift.</p><p>Procurement and construction shared a milestone.</p><p>First ordinary shortage was chalk, not structure.</p><p>Cost sits in the education share of deployed funds.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="school">
+      <div class="note-rail">
+        <span class="note-num">18</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Walungu</p>
+        <h2 class="note-title">Catch-up, then exit</h2>
+        <p class="note-blurb">Lost months need drills—and a path back to the timetable.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Facilitators work in the classroom language inside existing space.</p><p>Kits wear out; replacements are budgeted.</p><p>Sample-week averages beat lifetime stacks that never remove anyone.</p><p>A defined education-page share keeps the circle visible.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="school">
+      <div class="note-rail">
+        <span class="note-num">19</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Nyiragongo</p>
+        <h2 class="note-title">Eight stalls, living rota</h2>
+        <p class="note-blurb">Hand-over meant who sweeps and who reports a broken tap.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Hardware without a rota fails by month three.</p><p>Mid-year checks look at soap and latches, not inauguration photos.</p><p>Contractors got safeguarding briefings before tools came out.</p><p>Keys transferred is a completion test.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="school">
+      <div class="note-rail">
+        <span class="note-num">20</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Controls</p>
+        <h2 class="note-title">Ghosts fail a second signature</h2>
+        <p class="note-blurb">Scarce support needs rules teachers can respect.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Dual signatories and presence samples exist because pressure invents beneficiaries.</p><p>A trail an auditor can walk—not a claim of perfect enforcement.</p><p>Public education totals mean something only if random names could survive a check.</p><p>Discipline is quality when money is thin.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="progress">
+      <div class="note-rail">
+        <span class="note-num">21</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Ledger</p>
+        <h2 class="note-title">Totals allowed to move</h2>
+        <p class="note-blurb">Raised, deployed, and slices share one engine across pages.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Not a March PDF frozen for the year. Inflows and real gifts feed the same raised figure.</p><p>Education and Transparency a week apart should drift together.</p><p>Deployed, admin, and buffer sum to 100% of raised.</p><p>Named donor and simulated gift move the bar the same way—only the tag differs.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="progress">
+      <div class="note-rail">
+        <span class="note-num">22</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Maintenance</p>
+        <h2 class="note-title">Boring repairs win</h2>
+        <p class="note-blurb">Third seal changes mean ownership survived.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>A log with multiple repair lines outranks a second inauguration.</p><p>Goma’s spare shelf shortens downtime for ordinary parts.</p><p>Public packs list inspection dates beside install dates.</p><p>Maintenance culture is progress you can hold.</p></div>
+        </div>
+      </div>
+    </article>
+    <article class="note" data-type="progress">
+      <div class="note-rail">
+        <span class="note-num">23</span>
+        <span class="note-line" aria-hidden="true"></span>
+      </div>
+      <div class="note-main">
+        <p class="note-place">Hand-over</p>
+        <h2 class="note-title">Keys, rota, next visit dated</h2>
+        <p class="note-blurb">Stepping back without collapse is part of done.</p>
+        <button type="button" class="note-more" aria-expanded="false">Read note</button>
+        <div class="note-full" hidden>
+          <div class="note-body"><p>Completion includes who holds the key Monday and when the sample visit is booked.</p><p>Failed mid-year checks are written without cosmetics.</p><p>Success photography will dislike this standard; operators who need working stalls will not.</p><p>Progress includes the foundation’s exit.</p></div>
+        </div>
+      </div>
+    </article>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><div class="foot-bottom">© 2026 HopeCongo Foundation</div></div></footer>
+<div class="overlay" id="c"><div class="modal"><h2>Contact</h2><p><a href="mailto:hello@hopecongo.org">hello@hopecongo.org</a><br><a href="mailto:field@hopecongo.org">field@hopecongo.org</a><br><a href="mailto:finance@hopecongo.org">finance@hopecongo.org</a></p><button type="button" data-x>Close</button></div></div>
+<div class="overlay" id="t"><div class="modal"><h2>Terms</h2><p>Field notes link to public references. Contributions are voluntary under checkout terms.</p><button type="button" data-x>Close</button></div></div>
+
+
+<script>
+(function(){
+  var filter="all", q="";
+  function apply(){
+    var n=0;
+    document.querySelectorAll(".sc").forEach(function(el){
+      var type=el.getAttribute("data-type");
+      var hay=(el.getAttribute("data-search")+" "+el.textContent).toLowerCase();
+      var show=(filter==="all"||type===filter)&&(!q||hay.indexOf(q)!==-1);
+      el.style.display=show?"":"none";
+      if(show) n++;
+    });
+    document.getElementById("n").textContent=n+" showing";
+    document.getElementById("empty").style.display=n?"none":"block";
+    document.querySelectorAll(".pills button").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-filter")===filter); });
+    document.querySelectorAll(".chip-filter").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-filter")===filter); });
+  }
+  function setF(f){ filter=f; apply(); if(f!=="all") document.getElementById("grid").scrollIntoView({behavior:"smooth",block:"start"}); }
+  document.querySelectorAll(".pills button,.chip-filter").forEach(function(b){
+    b.addEventListener("click", function(){ setF(b.getAttribute("data-filter")); });
+  });
+  document.getElementById("q").addEventListener("input", function(e){ q=(e.target.value||"").trim().toLowerCase(); apply(); });
+  document.querySelectorAll(".sc-hit").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var sc=btn.closest(".sc");
+      var open=sc.classList.contains("open");
+      document.querySelectorAll(".sc.open").forEach(function(x){ x.classList.remove("open"); });
+      if(!open) sc.classList.add("open");
+    });
+  });
+  document.querySelectorAll("[data-o]").forEach(function(a){ a.addEventListener("click", function(e){ e.preventDefault(); document.getElementById(a.getAttribute("data-o")).classList.add("open"); }); });
+  document.querySelectorAll("[data-x]").forEach(function(b){ b.addEventListener("click", function(){ document.querySelectorAll(".overlay.open").forEach(function(o){ o.classList.remove("open"); }); }); });
+  document.querySelectorAll(".overlay").forEach(function(o){ o.addEventListener("click", function(e){ if(e.target===o) o.classList.remove("open"); }); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape"){ document.querySelectorAll(".overlay.open,.sc.open").forEach(function(x){ x.classList.remove("open"); }); }});
+  apply();
+})();
+</script>
+
+<script>
+(function(){
+  var n = document.querySelectorAll("#grid .sc").length;
+  var el = document.getElementById("libCount");
+  if(el) el.textContent = String(n);
+  var showing = document.getElementById("n");
+  function updateN(){
+    var vis = document.querySelectorAll("#grid .sc:not([hidden])").length;
+    if(showing) showing.textContent = vis + " notes";
+  }
+  updateN();
+  var q = document.getElementById("q");
+  var pills = document.querySelectorAll(".pills button");
+  var filter = "all";
+  function apply(){
+    var term = (q && q.value || "").toLowerCase().trim();
+    document.querySelectorAll("#grid .sc").forEach(function(card){
+      var type = card.getAttribute("data-type") || "";
+      var hay = (card.getAttribute("data-search") || card.textContent || "").toLowerCase();
+      var okType = filter === "all" || type === filter;
+      var okTerm = !term || hay.indexOf(term) !== -1;
+      card.hidden = !(okType && okTerm);
+    });
+    updateN();
+  }
+  if(q) q.addEventListener("input", apply);
+  pills.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      pills.forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      filter = btn.getAttribute("data-filter") || "all";
+      apply();
+    });
+  });
+  document.querySelectorAll(".sc-hit").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var card = btn.closest(".sc");
+      if(!card) return;
+      var open = card.classList.contains("open");
+      document.querySelectorAll(".sc.open").forEach(function(c){ c.classList.remove("open"); });
+      if(!open) card.classList.add("open");
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var list = document.getElementById("flowList");
+  if(!list) return;
+  var notes = list.querySelectorAll(".note");
+  var countEl = document.getElementById("libCount");
+  if(countEl) countEl.textContent = String(notes.length);
+  document.querySelectorAll(".ff").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll(".ff").forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      var f = btn.getAttribute("data-filter") || "all";
+      notes.forEach(function(n){
+        var t = n.getAttribute("data-type") || "";
+        n.hidden = !(f === "all" || t === f);
+      });
+    });
+  });
+  list.querySelectorAll(".note-more").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var full = btn.parentNode.querySelector(".note-full");
+      if(!full) return;
+      var open = !full.hidden;
+      full.hidden = open;
+      btn.setAttribute("aria-expanded", open ? "false" : "true");
+      btn.textContent = open ? "Read note" : "Close";
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
